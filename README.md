@@ -1,10 +1,11 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
-
+## 
 ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/ppd3d.jpg)
 
 
-![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/graph.jpg)
+[]![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/graph.jpg)[]
 
+## Acknowledgement
 ```python
 @inproceedings{yang2022towards,
     title={Towards Efficient 3D Object Detection with Knowledge Distillation},
