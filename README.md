@@ -1,7 +1,7 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 
-![alt](git@github.com:lifuyang-1919/PPD3D.git/docs/centerpoint-frame_)
-![alt](git@github.com:lifuyang-1919/PPD3D.git/docs/graph)
+![alt](https://github.com/lifuyang-1919/PPD3D.git/docs/centerpoint-frame_)
+![alt](https://github.com/lifuyang-1919/PPD3D.git/docs/graph)
 
 @inproceedings{yang2022towards,
     title={Towards Efficient 3D Object Detection with Knowledge Distillation},
