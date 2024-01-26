@@ -1,6 +1,6 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 
-![alt](URL title)
+![alt](docs/centerpoint-frame_ title)
 
 @inproceedings{yang2022towards,
     title={Towards Efficient 3D Object Detection with Knowledge Distillation},
