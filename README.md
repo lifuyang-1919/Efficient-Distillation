@@ -3,7 +3,7 @@
 ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/ppd3d.jpg)
 
 
-![](https://github.com/lifuyang-1919/PPD3D/tree/main/docs/graph.jpg)
+![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/graph.jpg)
 
 ```python
 @inproceedings{yang2022towards,
