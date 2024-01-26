@@ -1,6 +1,6 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 
-![alt](https://github.com/lifuyang-1919/PPD3D.git/docs/centerpoint-frame_)
+![alt](https://github.com/lifuyang-1919/PPD3D.git/docs/ppd3d)
 ![alt](https://github.com/lifuyang-1919/PPD3D.git/docs/graph)
 
 @inproceedings{yang2022towards,
