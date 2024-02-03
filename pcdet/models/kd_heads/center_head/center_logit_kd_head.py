@@ -112,47 +112,28 @@ class CenterLogitKDHead(KDHeadTemplate):
                 kd_hm_loss_all = self.kd_hm_loss_func(heatmap_stu, heatmap_tea)
                 # position-wise confidence mask: shape [bs, h*w, c]
                 mask = (torch.max(heatmap_stu, -1)[0] > loss_cfg.HM_LOSS.thresh).float() * \
-                                  (torch.max(heatmap_tea, -1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                       (torch.max(heatmap_tea, -1)[0] > loss_cfg.HM_LOSS.thresh).float()
                 kd_hm_loss_raw = (kd_hm_loss_all * mask.unsqueeze(-1)).sum() / (mask.sum() + 1e-6)
             elif loss_cfg.HM_LOSS.type in ['SmoothL1Loss', 'MSELoss']:
                 kd_hm_loss_all = self.kd_hm_loss_func(hm_stu, hm_tea)
-                # numpy.save('kd_hm_loss_all.npy', kd_hm_loss_all.cpu().detach().numpy())
-                # position-wise confidence mask: shape [bs, c, h, w]
-                # ------------------------ 1026 xiugai ----------------------------------------------
-                mask = (torch.max(hm_tea, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
-                # mask += (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
-                # mask = torch.max(hm_stu, dim=1)[0]
-                # mask += torch.max(hm_tea, dim=1)[0]
-                # mask = torch.where(mask > loss_cfg.HM_LOSS.thresh, 1/(mask+1), torch.zeros_like(mask))
-                # numpy.save('mask_hm-s.npy', mask.cpu())
-                # import pdb;pdb.set_trace()
-                # ----------------------------------------------------------------------------------
-                # if loss_cfg.HM_LOSS.get('tea_mask', None):
-                #     mask = torch.max(hm_tea, dim=1)[0] + mask
-
+                mask = 0
+                if loss_cfg.HM_LOSS.get('tea_mask', None):
+                    mask = (torch.max(hm_tea, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                    if loss_cfg.HM_LOSS.get('soft_mask', None):
+                        mask = torch.max(hm_tea, dim=1)[0]
+                        mask = torch.where(mask > loss_cfg.HM_LOSS.thresh, 10 / (mask + 10), torch.zeros_like(mask))
                 if loss_cfg.HM_LOSS.get('fg_mask', None):
                     fg_mask = self.cal_fg_mask_from_target_heatmap_batch(
                         target_dicts, soft=loss_cfg.HM_LOSS.get('soft_mask', None)
                     )[idx]
-                    # mask *= fg_mask
-                    mask = mask + fg_mask
-                
-                if loss_cfg.HM_LOSS.get('rank', -1) != -1:
-                    rank_mask = self.cal_rank_mask_from_teacher_pred(pred_tea, K=loss_cfg.HM_LOSS.rank)[idx]
-                    mask *= rank_mask
-                # ==================== hm_loss map ==================================
-                # numpy.save('kd_hm_loss-s', (kd_hm_loss_all * mask.unsqueeze(1)).cpu().detach().numpy())
-                # ----------------------------------------------------------
-                kd_hm_loss_raw = (kd_hm_loss_all * mask.unsqueeze(1)).sum() / (mask.sum() + 1e-6)
-                # kd_hm_loss_raw = (kd_hm_loss_all * mask1.unsqueeze(1)).sum() / (mask.sum() + 1e-6)
-                # if loss_cfg.HM_LOSS.get('head_m', None):
-                #     if idx==0:
-                #         kd_hm_loss_raw *= 100
-                #     elif idx==1:
-                #         kd_hm_loss_raw *= 50
-                #     else:
-                #         kd_hm_loss_raw *= 1
-                    # import pdb;pdb.set_trace()
+                    mask += fg_mask
+                if loss_cfg.HM_LOSS.get('stu_mask', None):
+                    mask += (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                    if loss_cfg.HM_LOSS.get('soft_mask', None):
+                        mask_stu = (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                        mask_stu += torch.where(mask_stu > loss_cfg.HM_LOSS.thresh, 10 / (mask_stu + 10), torch.zeros_like(mask_stu))
+                    mask += mask_stu
+                kd_hm_loss_raw = (kd_hm_loss_all * mask.unsqueeze(1)).sum() / mask.sum()
             else:
                 raise NotImplementedError
             kd_hm_loss += loss_cfg.HM_LOSS.weight * kd_hm_loss_raw
@@ -165,13 +146,16 @@ class CenterLogitKDHead(KDHeadTemplate):
 
             # localization loss
             # parse teacher prediction to target style
-            pred_boxes_tea = torch.cat([cur_pred_tea[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
-            pred_boxes_stu = torch.cat([cur_pred_stu[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
+            pred_boxes_tea = torch.cat(
+                [cur_pred_tea[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
+            pred_boxes_stu = torch.cat(
+                [cur_pred_stu[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
             if loss_cfg.REG_LOSS.weight == 0 or (pred_boxes_tea.shape != pred_boxes_stu.shape):
                 kd_reg_loss_raw = 0
                 # import pdb;pdb.set_trace()
             elif loss_cfg.REG_LOSS.type == 'RegLossCenterNet':
-                pred_boxes_tea_selected = loss_utils._transpose_and_gather_feat(pred_boxes_tea, target_dicts['inds'][idx])
+                pred_boxes_tea_selected = loss_utils._transpose_and_gather_feat(pred_boxes_tea,
+                                                                                target_dicts['inds'][idx])
 
                 kd_reg_loss_raw = self.kd_reg_loss_func(
                     pred_boxes_stu, target_dicts['masks'][idx], target_dicts['inds'][idx], pred_boxes_tea_selected
@@ -182,27 +166,8 @@ class CenterLogitKDHead(KDHeadTemplate):
             else:
                 raise NotImplementedError
             kd_reg_loss += loss_cfg.REG_LOSS.weight * kd_reg_loss_raw
-            # import pdb;pdb.set_trace()
-            # statis_hweight += target_dicts['masks'][idx].sum()
-            # kd_reg_loss *= target_dicts['masks'][idx].sum().item()/pred_boxes_tea.shape[0]
-            # if len(pred_stu)==6:
-            #     # if idx == 0:
-            #     #     kd_reg_loss = kd_hm_loss = 0
-            #     # if idx == 1:
-            #     #     kd_reg_loss = kd_hm_loss = 0
-            #     if (idx != 0) and (idx != 1):
-            #         kd_reg_loss = kd_hm_loss = 0
-            # statis_hweight += torch.log(target_dicts['masks'][idx].sum())
-            # kd_reg_loss *= torch.log(target_dicts['masks'][idx].sum()) / pred_boxes_tea.shape[0]
-            # kd_hm_loss *= torch.log(target_dicts['masks'][idx].sum()) / pred_boxes_tea.shape[0]
-
-        # kd_loss = (kd_hm_loss + kd_hm_sort_loss + kd_reg_loss) / statis_hweight
-
         kd_loss = (kd_hm_loss + kd_hm_sort_loss + kd_reg_loss) / len(pred_stu)
-        # import pdb;pdb.set_trace()
-
         return kd_loss, kd_hm_loss / len(pred_stu), kd_reg_loss / len(pred_stu), kd_hm_sort_loss / len(pred_stu)
-        # return kd_loss, kd_hm_loss / statis_hweight, kd_reg_loss / statis_hweight, kd_hm_sort_loss / statis_hweight
 
     def get_kd_loss_with_target_tea(self, pred_tea, loss_cfg, target_dict_tea):
         """
@@ -256,12 +221,14 @@ class CenterLogitKDHead(KDHeadTemplate):
             kd_hm_loss += loss_cfg.HM_LOSS.weight * kd_hm_loss_raw
 
             # localization loss
-            pred_boxes_stu = torch.cat([cur_pred_stu[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
+            pred_boxes_stu = torch.cat(
+                [cur_pred_stu[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
             if loss_cfg.REG_LOSS.weight == 0:
                 kd_reg_loss_raw = 0
             elif loss_cfg.REG_LOSS.type == 'RegLossCenterNet':
                 # parse teacher prediction to target style
-                pred_boxes_tea = torch.cat([cur_pred_tea[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
+                pred_boxes_tea = torch.cat(
+                    [cur_pred_tea[head_name] for head_name in self.dense_head.separate_head_cfg.HEAD_ORDER], dim=1)
 
                 # interpolate if the shape of feature map not match
                 if (pred_boxes_tea.shape != pred_boxes_stu.shape) and self.model_cfg.LOGIT_KD.get('ALIGN', None):
@@ -337,7 +304,8 @@ class CenterLogitKDHead(KDHeadTemplate):
                     valid_boxes_stu.unsqueeze(0), valid_boxes_tea.unsqueeze(0).detach()
                 )
                 batch_kd_reg_loss += kd_reg_loss_all.mean()
-                import pdb;pdb.set_trace()
+                import pdb;
+                pdb.set_trace()
             else:
                 raise NotImplementedError
 
