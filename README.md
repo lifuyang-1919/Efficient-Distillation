@@ -1,6 +1,6 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 ## 
-![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.jpg)  <img width=200/> Architecture of the proposed method| ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/pru.jpg)  <img width=100/> Illustration of the input resolution compression and the channel pruning process |
+![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.jpg)  <img width=150/> Architecture of the proposed method | ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/pru.jpg)  <img width=150/> Illustration of the input resolution compression and the channel pruning process |
 ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/efficiency.png) <img width=200/> Comparisons on the Waymo validation set| ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/tab.jpg)  <img width=100/> QUANTITATIVE EVALUATION |
 ------------- | ----------- |
 
