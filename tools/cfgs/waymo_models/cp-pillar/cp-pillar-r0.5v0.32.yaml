@@ -1,6 +1,6 @@
 CLASS_NAMES: ['Vehicle', 'Pedestrian', 'Cyclist']
-#PRETRAINED_MODEL: '../output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_0.pth'
-PRETRAINED_MODEL: '/home/ubuntu2004/code/lfy/test/SparseKD/output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_130.pth'  # no best teacher
+# PRETRAINED_MODEL: '../output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_0.pth'
+# PRETRAINED_MODEL: '/home/ubuntu2004/code/lfy/test/SparseKD/output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_130.pth'  # no best teacher
 
 DATA_CONFIG:
     _BASE_CONFIG_: cfgs/dataset_configs/waymo_dataset.yaml
