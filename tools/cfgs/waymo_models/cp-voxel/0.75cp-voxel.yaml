@@ -2,6 +2,7 @@ CLASS_NAMES: ['Vehicle', 'Pedestrian', 'Cyclist']
 
 #PRETRAINED_MODEL: '../output/waymo_models/cp-voxel/cp-voxel/default/ckpt/checkpoint_epoch_0.pth'
 #TEACHER_CKPT: '../output/waymo_models/cp-voxel/cp-voxel/default/ckpt/checkpoint_epoch_200.pth'
+PRETRAINED_MODEL: '../output/waymo_models/cp-voxel/cp-voxel/0.75/0.75voxel-r2m3.pth'
 
 DATA_CONFIG:
     _BASE_CONFIG_: cfgs/dataset_configs/waymo_dataset.yaml
