@@ -3,7 +3,7 @@
 
 ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.jpg "Architecture of the proposed method")  <img width=150/>  | ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/pru.jpg "Illustration of the input resolution compression and the channel pruning process")  <img width=150/>  |
 ------------- | ----------- |
-![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/efficiency.png) <img width=200/> Comparisons on the Waymo validation set| ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/tab.jpg)  <img width=100/> QUANTITATIVE EVALUATION |
+![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/efficiency.png "Comparisons on the Waymo") <img width=200/> | ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/tab.jpg "QUANTITATIVE EVALUATION")  <img width=100/> |
 
 
 
