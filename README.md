@@ -1,9 +1,9 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 ## 
-![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/ppd3d.jpg)  <img width=170/>|  ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/efficiency.jpg) <img width=70/> | ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/graph.jpg) <img width=70/> |
-------------- | ----------- | -------- |
+![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/frame.jpg)  <img width=200/>|  ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/efficiency.jpg) <img width=100/> |
+------------- | ----------- |
 
-[![Star History Chart](https://api.star-history.com/svg?repos=lifuyang-1919/PPD3D&type=Date)](https://star-history.com/#lifuyang-1919/PPD3D&Date)
+![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/tab.jpg)  <img width=200/>
 
 ## Acknowledgement
 ```python
