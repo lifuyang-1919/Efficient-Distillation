@@ -247,36 +247,76 @@ def main():
     logger.info('**********************End evaluation %s/%s(%s)**********************' %
                 (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
     # ----------------------------------start pruning-----------------------------------------------
-
-    if cfg.get('PRUNING', None) and cfg.PRUNING.ENABLED:
-        train_set, train_loader, train_sampler = build_dataloader(
-            dataset_cfg=cfg.DATA_CONFIG,
-            class_names=cfg.CLASS_NAMES,
-            batch_size=int(2),
-            dist=dist_train, workers=args.workers,
-            logger=logger,
-            training=True,
-            merge_all_iters_to_one_epoch=args.merge_all_iters_to_one_epoch,
-            total_epochs=args.epochs
-        )
-        logger.info('**********************Start pruning %s/%s(%s)**********************'
+    train_set, train_loader, train_sampler = build_dataloader(
+        dataset_cfg=cfg.DATA_CONFIG,
+        class_names=cfg.CLASS_NAMES,
+        batch_size=int(2),
+        dist=dist_train, workers=args.workers,
+        logger=logger,
+        training=True,
+        merge_all_iters_to_one_epoch=args.merge_all_iters_to_one_epoch,
+        total_epochs=args.epochs
+    )
+    if cfg.get('PRUNING2D', None) and cfg.PRUNING2D.ENABLED:
+        logger.info('**********************Start pruning 2D %s/%s(%s)**********************'
                     % (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
         # pruning = True
         # logger.info('**********************Start pruning %s/%s(%s)**********************'
         #             % (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
-        train_pruning_model(
+        start_epoch += 1
+        model = train_pruning_model(
             model,
             optimizer,
             train_loader,
             optim_cfg=cfg.OPTIMIZATION,
-            start_epoch=int(0),
+            start_epoch=start_epoch,
             total_epochs=args.epochs,
             ckpt_save_dir=ckpt_dir,
+            Random=cfg.PRUNING2D.Random2D,
         )
-    # model.train()
-    # import pdb;pdb.set_trace()
-    # --------------------------------------------------------------------------------------------
+        PRUNING2D = True
+        # start_epoch = int(0)  # cfg/time最新的epoch
+    else:
+        PRUNING2D = False
 
+    if cfg.get('PRUNING3D', None) and cfg.PRUNING3D.ENABLED:
+        logger.info('**********************Start pruning 3D %s/%s(%s)**********************'
+                    % (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
+        start_epoch += 1
+        model = train_pruning_3Dconv1(
+            model,
+            optimizer,
+            train_loader,
+            train_set,
+            cfg.MODEL,
+            cfg=cfg,
+            args=args,
+            optim_cfg=cfg.OPTIMIZATION,
+            start_epoch=start_epoch,
+            total_epochs=args.epochs,
+            ckpt_save_dir=ckpt_dir,
+            PRUNING2D=PRUNING2D,
+            Random=cfg.PRUNING3D.Random3D,
+        )
+    # --------------------------------------------------------------------------------------------
+    logger.info('**********************Start evaluation %s/%s(%s)**********************' %
+                (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
+    test_set, test_loader, sampler = build_dataloader(
+        dataset_cfg=cfg.DATA_CONFIG,
+        class_names=cfg.CLASS_NAMES,
+        batch_size=args.batch_size,
+        dist=dist_train, workers=args.workers, logger=logger, training=False
+    )
+    eval_output_dir = output_dir / 'eval' / 'eval_with_train'
+    eval_output_dir.mkdir(parents=True, exist_ok=True)
+    train_eval_ckpt(
+        model.module if dist_train else model,
+        test_loader, args, eval_output_dir, logger,
+        start_epoch, ckpt_dir, dist_test=dist_train
+    )
+
+    logger.info('**********************End evaluation %s/%s(%s)**********************' %
+                (cfg.EXP_GROUP_PATH, cfg.TAG, args.extra_tag))
 
 if __name__ == '__main__':
     main()
