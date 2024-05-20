@@ -127,5 +127,10 @@ OPTIMIZATION:
 
     GRAD_NORM_CLIP: 10
 
-PRUNING:
+
+PRUNING2D:
     ENABLED: False
+    Random2D: True
+PRUNING3D:
+    ENABLED: False
+    Random3D: True
