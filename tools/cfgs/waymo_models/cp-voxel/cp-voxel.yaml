@@ -125,5 +125,9 @@ OPTIMIZATION:
         OFA:
             l1_norm: max
 
-PRUNING:
+PRUNING2D:
     ENABLED: False
+    Random2D: True
+PRUNING3D:
+    ENABLED: False
+    Random3D: True
