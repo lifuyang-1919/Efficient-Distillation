@@ -1,6 +1,6 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 ## 
-![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/frame.jpg)  <img width=200/>|  ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/efficiency.jpg) <img width=100/> |
+![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/frame.png)  <img width=200/>|  ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/efficiency.jpg) <img width=100/> |
 ------------- | ----------- |
 
 ![](https://github.com/lifuyang-1919/PPD3D/blob/main/docs/tab.jpg)  <img width=200/>
