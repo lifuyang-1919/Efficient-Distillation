@@ -1,16 +1,13 @@
 CLASS_NAMES: ['Vehicle', 'Pedestrian', 'Cyclist']
 
 #PRETRAINED_MODEL: '../output/waymo_models/cp-pillar/checkpoint_epoch_0.pth'
-TEACHER_CKPT: '/home/ubuntu2004/code/lfy/test/SparseKD/output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_130.pth'  # no best teacher
-#TEACHER_CKPT: '../output/waymo_models/cp-pillar/cp-pillar-v0.4_sparsekd_pruning/5811/ckpt/checkpoint_epoch_41.pth'
-#PRETRAINED_MODEL: '/home/ubuntu2004/code/lfy/test/SparseKD/output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_130.pth'  # no best teacher
+TEACHER_CKPT: '../output/waymo_models/cp-pillar/cp-pillar/default/ckpt/checkpoint_epoch_130.pth'
 #PRETRAINED_MODEL: '../output/waymo_models/cp-pillar/cp-pillar/0.5pillar-m2.pth'
 PRETRAINED_MODEL: '../output/waymo_models/cp-pillar/cp-pillar/0.5pillar-r2.pth'
 
 
 DATA_CONFIG:
     _BASE_CONFIG_: cfgs/dataset_configs/waymo_dataset.yaml
-#    _BASE_CONFIG_: cfgs/dataset_configs/nuscenes_dataset.yaml
 
     POINT_CLOUD_RANGE: [-74.24, -74.24, -2, 74.24, 74.24, 4.0]
     DATA_PROCESSOR:
