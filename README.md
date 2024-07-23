@@ -1,7 +1,7 @@
 # Pre-pruned Distillation for Point Cloud-based 3D Object Detection
 ## 
 
-![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.jpg "Architecture of the proposed method")  <img width=150/>  
+![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.png "Architecture of the proposed method")  <img width=150/>  
 
 
 ## Acknowledgement
