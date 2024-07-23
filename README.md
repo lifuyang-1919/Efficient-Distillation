@@ -4,12 +4,6 @@
 ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/frame.jpg "Architecture of the proposed method")  <img width=150/>  
 
 
-#| ![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/pru.jpg "Illustration of the input resolution compression and the channel pruning process")  <img width=150/>  |
-#------------- | ----------- |
-#![](https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/efficiency.png "Comparisons on the Waymo") <img width=200/> | ![]##(https://github.com/lifuyang-1919/Efficient-Distillation/blob/main/docs/tab.jpg "QUANTITATIVE EVALUATION")  <img width=100/> |
-
-
-
 ## Acknowledgement
 ```python
 @inproceedings{yang2022towards,
