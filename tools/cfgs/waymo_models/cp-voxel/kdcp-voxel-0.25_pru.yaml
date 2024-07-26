@@ -296,6 +296,8 @@ KD_LOSS:
         thresh: 0.0,  # threshold for score PP Logit KD
         fg_mask: True,
         soft_mask: True,
+        stu_mask: False,
+        tea_mask: False,
     }
 
     REG_LOSS: {
