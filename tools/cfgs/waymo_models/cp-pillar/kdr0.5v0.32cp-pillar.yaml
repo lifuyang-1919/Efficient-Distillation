@@ -319,11 +319,11 @@ KD_LOSS:
     FEATURE_LOSS: {
         mode: rois,
         type: MSELoss, # [SmoothL1Loss, MSELoss]
-        weight: 0.1,
+        weight: 1,
         GID: False,
-        rel_weight: 0.1,
+        rel_weight: 1,
         GID_ANG: True,
-        ang_weight: 0.1,
+        ang_weight: 1,
         # weight mask
         fg_mask: False,
         score_mask: False,
