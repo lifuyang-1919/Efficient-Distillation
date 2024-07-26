@@ -295,7 +295,7 @@ KD_LOSS:
         type: MSELoss, # [FocalLossCenterNet, SmoothL1Loss, MSELoss]
         weight: 15.0,
         thresh: 0.1,  # threshold for score PP Logit KD
-        fg_mask: False,
+        fg_mask: True,
         soft_mask: False,
         stu_mask: False,
         tea_mask: True,
