@@ -270,7 +270,7 @@ KD:
             DOWNSAMPLE_RATIO: 1
 
             ROI: gt # ['gt', 'tea', 'stu']
-            THRESH: 0.7 # for teacher prediction for student prediction
+            THRESH: 0.6 # for teacher prediction for student prediction
 
     LABEL_ASSIGN_KD:
         ENABLED: True
@@ -292,19 +292,17 @@ KD_LOSS:
     ENABLED: True
     HM_LOSS: {
         type: MSELoss, # [FocalLossCenterNet, SmoothL1Loss, MSELoss]
-        weight: 7.0, #15.0,
+        weight: 15.0,
         thresh: 0.0,  # threshold for score PP Logit KD
-        fg_mask: False,
-        soft_mask: False,
-        stu_mask: False,
-        tea_mask: True,
+        fg_mask: True,
+        soft_mask: True,
     }
 
     REG_LOSS: {
         type: RegLossCenterNet,
         # for L1 loss only
         code_weights: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-        weight: 0.2 #0.2
+        weight: 0.2 
     }
 
     FEATURE_LOSS: {
@@ -312,7 +310,7 @@ KD_LOSS:
         type: MSELoss, # [SmoothL1Loss, MSELoss]
         weight: 0.1,
         ANG: False,
-        ang_weight: 0.01,
+        ang_weight: 0.1,
         fg_mask: False,
         score_mask: False,
         score_thresh: 0.3
