@@ -128,7 +128,7 @@ class CenterLogitKDHead(KDHeadTemplate):
                     )[idx]
                     mask += fg_mask
                 if loss_cfg.HM_LOSS.get('stu_mask', None):
-                    mask += (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                    mask *= (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
                     if loss_cfg.HM_LOSS.get('soft_mask', None):
                         mask_stu = (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
                         mask_stu += torch.where(mask_stu > loss_cfg.HM_LOSS.thresh, 10 / (mask_stu + 10), torch.zeros_like(mask_stu))
