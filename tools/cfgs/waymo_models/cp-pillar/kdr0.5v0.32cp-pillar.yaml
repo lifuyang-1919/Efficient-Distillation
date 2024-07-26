@@ -306,6 +306,8 @@ KD_LOSS:
         thresh: 0.1,  # threshold for score PP Logit KD
         fg_mask: True,
         soft_mask: False,
+        stu_mask: False,
+        tea_mask: True,
         rank: -1,  # rank PP Logit KD, -1 means not used
     }
 
