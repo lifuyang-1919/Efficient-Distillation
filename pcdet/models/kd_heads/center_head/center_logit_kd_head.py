@@ -15,7 +15,7 @@ class CenterLogitKDHead(KDHeadTemplate):
             self.kd_hm_loss_func = getattr(loss_utils, self.model_cfg.KD_LOSS.HM_LOSS.type)(
                 pos_thresh=self.model_cfg.KD_LOSS.HM_LOSS.pos_thresh
             )
-        elif self.model_cfg.KD_LOSS.HM_LOSS.type in ['SmoothL1Loss', 'MSELoss']:
+        elif self.model_cfg.KD_LOSS.HM_LOSS.type in ['SmoothL1Loss', 'MSELoss', 'HuberLoss']:
             self.kd_hm_loss_func = getattr(torch.nn, self.model_cfg.KD_LOSS.HM_LOSS.type)(reduction='none')
         else:
             raise NotImplementedError
