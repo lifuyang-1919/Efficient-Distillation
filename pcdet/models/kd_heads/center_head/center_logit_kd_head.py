@@ -121,17 +121,19 @@ class CenterLogitKDHead(KDHeadTemplate):
                     mask = (torch.max(hm_tea, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
                     if loss_cfg.HM_LOSS.get('soft_mask', None):
                         mask = torch.max(hm_tea, dim=1)[0]
-                        mask = torch.where(mask > loss_cfg.HM_LOSS.thresh, 10 / (mask + 10), torch.zeros_like(mask))
+                        mask = torch.where(mask > loss_cfg.HM_LOSS.thresh, mask, torch.zeros_like(mask))
                 if loss_cfg.HM_LOSS.get('fg_mask', None):
                     fg_mask = self.cal_fg_mask_from_target_heatmap_batch(
                         target_dicts, soft=loss_cfg.HM_LOSS.get('soft_mask', None)
                     )[idx]
                     mask += fg_mask
+                    mask = (torch.max(mask, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
                 if loss_cfg.HM_LOSS.get('stu_mask', None):
-                    mask *= (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                    mask += (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
+                    mask = (torch.max(mask, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
                     if loss_cfg.HM_LOSS.get('soft_mask', None):
                         mask_stu = (torch.max(hm_stu, dim=1)[0] > loss_cfg.HM_LOSS.thresh).float()
-                        mask_stu += torch.where(mask_stu > loss_cfg.HM_LOSS.thresh, 10 / (mask_stu + 10), torch.zeros_like(mask_stu))
+                        mask_stu += torch.where(mask_stu > loss_cfg.HM_LOSS.thresh, mask, torch.zeros_like(mask_stu))
                     mask += mask_stu
                 kd_hm_loss_raw = (kd_hm_loss_all * mask.unsqueeze(1)).sum() / mask.sum()
             else:
