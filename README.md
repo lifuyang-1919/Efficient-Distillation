@@ -21,12 +21,3 @@
     year={2020}
 }
 ```
-```python
-@inproceedings{fang2023depgraph,
-  title={Depgraph: Towards any structural pruning},
-  author={Fang, Gongfan and Ma, Xinyin and Song, Mingli and Mi, Michael Bi and Wang, Xinchao},
-  booktitle={Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition},
-  pages={16091--16101},
-  year={2023}
-}
-```
